@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "cobaltarmaments:items/cobalt_hoe_powered"
+  }
+}

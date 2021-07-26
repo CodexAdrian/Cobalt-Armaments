@@ -1,0 +1,9 @@
+{
+  "item.cobaltarmaments.cobalt_pickaxe" : "Cobalt Pickaxe",
+  "item.cobaltarmaments.cobalt_hammer" : "Cobalt Hammer",
+  "item.cobaltarmaments.cobalt_shovel" : "Cobalt Shovel",
+  "item.cobaltarmaments.cobalt_hoe" : "Cobalt Hoe",
+  "item.cobaltarmaments.cobalt_axe" : "Cobalt Axe",
+  "cobaltarmaments.empowered_indicator": "EMPOWERED",
+  "cobaltarmaments.depowered_indicator": "DEPOWERED"
+}
