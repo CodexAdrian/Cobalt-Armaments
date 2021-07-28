@@ -17,6 +17,7 @@
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
+  "accessWidener": "cobaltarmaments.accesswidener",
   "entrypoints": {
     "main": [
       "me.codexadrian.cobaltarmaments.CobaltArmaments"

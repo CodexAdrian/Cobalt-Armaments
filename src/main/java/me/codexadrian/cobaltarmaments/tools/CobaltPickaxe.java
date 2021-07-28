@@ -5,8 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -17,9 +17,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CobaltAxe extends AxeItem implements CobaltTool {
+public class CobaltPickaxe extends PickaxeItem implements CobaltTool {
 
-    public CobaltAxe(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
+
+    public CobaltPickaxe(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
         super(material, attackDamage, attackSpeed, settings);
     }
 
@@ -43,6 +44,10 @@ public class CobaltAxe extends AxeItem implements CobaltTool {
         CobaltTool.super.appendTooltip(stack, world, tooltip, context);
     }
 
+    @Override
+    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+        return false;
+    }
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
@@ -57,10 +62,5 @@ public class CobaltAxe extends AxeItem implements CobaltTool {
     @Override
     public int getItemBarColor(ItemStack stack) {
         return CobaltTool.super.getBarColor(stack);
-    }
-
-    @Override
-    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-        return false;
     }
 }

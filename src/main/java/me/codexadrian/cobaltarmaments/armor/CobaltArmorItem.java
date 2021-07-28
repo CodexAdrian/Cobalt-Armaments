@@ -1,17 +1,18 @@
 package me.codexadrian.cobaltarmaments.armor;
 
 import me.codexadrian.cobaltarmaments.ItemConfigs;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
 
 public class CobaltArmorItem extends ArmorItem implements EnergyHolder {
-    public CobaltArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Properties properties) {
+    public CobaltArmorItem(ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot, Item.Settings properties) {
         super(armorMaterial, equipmentSlot, properties);
     }
 
