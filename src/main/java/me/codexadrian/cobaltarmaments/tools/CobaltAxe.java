@@ -52,7 +52,7 @@ public class CobaltAxe extends AxeItem implements CobaltTool {
                 for (BlockPos logPos : newCachedPositions) {
                     world.breakBlock(logPos, !player.isCreative());
                     index++;
-                    if(index > limit) break;
+                    if(index > limit && attemptEnergyDrain(stack, 1)) break;
                 }
                 if(newCachedPositions.size() == 0) break;
                 cachedPositions = newCachedPositions;
