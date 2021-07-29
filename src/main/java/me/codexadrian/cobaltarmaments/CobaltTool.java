@@ -123,8 +123,8 @@ public interface CobaltTool extends EnergyHolder {
             while (index.get() < limit) {
                 List<BlockPos> newCachedPositions = new ArrayList<>();
                 for (BlockPos logPos : cachedPositions) {
-                    BlockBox box = BlockBox.create(logPos.add(-1, -1, -1), logPos.add(1, 1, 1));
-                    newCachedPositions.addAll(BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, blockPos) && index.getAndIncrement() < limit).map(blockPos -> breakAndCache(world, player, stack, blockPos, index, limit)).toList());
+                    BlockBox box = BlockBox.create(logPos.add(1, 1, 1), logPos.add(-1, -1, -1));
+                    newCachedPositions.addAll(BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, blockPos)).filter(blockPos -> index.getAndIncrement() < limit).map(blockPos -> playerBreak(world, player, stack, blockPos)).toList());
                 }
                 if (newCachedPositions.isEmpty()) break;
                 cachedPositions = newCachedPositions;
@@ -133,13 +133,10 @@ public interface CobaltTool extends EnergyHolder {
         return attemptEnergyDrain(stack, 1);
     }
 
-    default BlockPos breakAndCache(World world, PlayerEntity player, ItemStack stack, BlockPos pos, AtomicInteger index, int limit) {
+    default BlockPos playerBreak(World world, PlayerEntity player, ItemStack stack, BlockPos pos) {
         //TODO trick mc into thinking its the player
-        if(index.get() < limit) {
-            world.breakBlock(pos, !player.isCreative());
-            attemptEnergyDrain(stack, 1);
-            index.getAndIncrement();
-        }
+        world.breakBlock(pos, !player.isCreative());
+        attemptEnergyDrain(stack, 1);
         return pos;
     }
 }
