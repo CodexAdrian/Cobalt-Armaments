@@ -1,8 +1,15 @@
 package me.codexadrian.cobaltarmaments;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagGroup;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -10,6 +17,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -19,7 +28,11 @@ import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 
 public interface CobaltTool extends EnergyHolder {
@@ -73,11 +86,12 @@ public interface CobaltTool extends EnergyHolder {
 
     default void appendTooltip(ItemStack itemStack, @Nullable World level, List<Text> list, TooltipContext tooltipFlag) {
         LiteralText text = new LiteralText("");
-        text.append(new LiteralText(((int) this.getEnergyStorage(itemStack).getEnergy())/1000 + "kLF/" + ((int) this.getMaxStoredPower())/1000 + "kLF"));
+        text.append(new LiteralText(((int) this.getEnergyStorage(itemStack).getEnergy()) / 1000 + "kLF/" + ((int) this.getMaxStoredPower()) / 1000 + "kLF"));
         list.add(text.formatted(Formatting.GRAY));
         Text empowered = CobaltArmaments.getIfEmpowered(itemStack) ? new TranslatableText("cobaltarmaments.empowered_indicator").formatted(Formatting.AQUA, Formatting.BOLD) : new TranslatableText("cobaltarmaments.depowered_indicator").formatted(Formatting.BLUE, Formatting.BOLD);
         list.add(empowered);
     }
+
     //improved from Item.raycast();
     static BlockHitResult getPlayerPOVHitResult(World level, PlayerEntity player, RaycastContext.FluidHandling fluid) {
         float pitch = player.getPitch();
@@ -91,6 +105,42 @@ public interface CobaltTool extends EnergyHolder {
         double zOffset = yawOffsetZ * pitchOffsetZ;
         Vec3d vec3d2 = eyePos.add(xOffset * 5.0D, pitchOffsetX * 5.0D, zOffset * 5.0D);
         return level.raycast(new RaycastContext(eyePos, vec3d2, RaycastContext.ShapeType.OUTLINE, fluid, player));
+    }
+
+    default boolean veinMine(ItemStack stack, World world, BlockState state, Tag<Block> blockTag, BlockPos pos, LivingEntity miner) {
+        if (state.isIn(blockTag)) {
+            return this.veinMine(stack, world, state, pos, miner);
+        }
+        return attemptEnergyDrain(stack, 1);
+    }
+
+    default boolean veinMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        if (miner instanceof PlayerEntity player) {
+            ArrayList<BlockPos> cachedPositions = new ArrayList<>();
+            cachedPositions.add(pos);
+            AtomicInteger index = new AtomicInteger();
+            int limit = 32;
+            while (index.get() < limit) {
+                ArrayList<BlockPos> newCachedPositions = new ArrayList<>();
+                for (BlockPos logPos : cachedPositions) {
+                    BlockBox box = BlockBox.create(logPos.add(-1, -1, -1), logPos.add(1, 1, 1));
+                    BlockPos.stream(box).filter(blockPos -> blockPos.equals(pos) && world.getBlockState(pos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, pos)).forEach(blockPos -> breakAndCache(newCachedPositions, world, player, stack, blockPos, index, limit));
+                }
+                if (newCachedPositions.isEmpty()) break;
+                cachedPositions = newCachedPositions;
+            }
+        }
+        return attemptEnergyDrain(stack, 1);
+    }
+
+    default void breakAndCache(ArrayList<BlockPos> list, World world, PlayerEntity player, ItemStack stack, BlockPos pos, AtomicInteger index, int limit) {
+        //TODO trick mc into thinking its the player
+        if(index.get() < limit) {
+            world.breakBlock(pos, !player.isCreative());
+            attemptEnergyDrain(stack, 1);
+            list.add(pos);
+            index.getAndIncrement();
+        }
     }
 }
 
