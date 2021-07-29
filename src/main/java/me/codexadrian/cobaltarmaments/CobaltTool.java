@@ -116,15 +116,15 @@ public interface CobaltTool extends EnergyHolder {
 
     default boolean veinMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if (miner instanceof PlayerEntity player) {
-            ArrayList<BlockPos> cachedPositions = new ArrayList<>();
+            List<BlockPos> cachedPositions = new ArrayList<>();
             cachedPositions.add(pos);
             AtomicInteger index = new AtomicInteger();
             int limit = 32;
             while (index.get() < limit) {
-                ArrayList<BlockPos> newCachedPositions = new ArrayList<>();
+                List<BlockPos> newCachedPositions = new ArrayList<>();
                 for (BlockPos logPos : cachedPositions) {
                     BlockBox box = BlockBox.create(logPos.add(-1, -1, -1), logPos.add(1, 1, 1));
-                    BlockPos.stream(box).filter(blockPos -> blockPos.equals(pos) && world.getBlockState(pos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, pos)).forEach(blockPos -> breakAndCache(newCachedPositions, world, player, stack, blockPos, index, limit));
+                    newCachedPositions.addAll(BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, blockPos) && index.getAndIncrement() < limit).map(blockPos -> breakAndCache(world, player, stack, blockPos, index, limit)).toList());
                 }
                 if (newCachedPositions.isEmpty()) break;
                 cachedPositions = newCachedPositions;
@@ -133,14 +133,14 @@ public interface CobaltTool extends EnergyHolder {
         return attemptEnergyDrain(stack, 1);
     }
 
-    default void breakAndCache(ArrayList<BlockPos> list, World world, PlayerEntity player, ItemStack stack, BlockPos pos, AtomicInteger index, int limit) {
+    default BlockPos breakAndCache(World world, PlayerEntity player, ItemStack stack, BlockPos pos, AtomicInteger index, int limit) {
         //TODO trick mc into thinking its the player
         if(index.get() < limit) {
             world.breakBlock(pos, !player.isCreative());
             attemptEnergyDrain(stack, 1);
-            list.add(pos);
             index.getAndIncrement();
         }
+        return pos;
     }
 }
 
