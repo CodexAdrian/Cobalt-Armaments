@@ -2,13 +2,10 @@ package me.codexadrian.cobaltarmaments.tools;
 
 import me.codexadrian.cobaltarmaments.CobaltArmaments;
 import me.codexadrian.cobaltarmaments.CobaltTool;
-import me.codexadrian.cobaltarmaments.ItemConfigs;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -20,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.EnergyHolder;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +69,7 @@ public class CobaltSword extends SwordItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 }
 

@@ -3,9 +3,10 @@ package me.codexadrian.cobaltarmaments;
 import me.codexadrian.cobaltarmaments.tools.CobaltHammer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
@@ -18,7 +19,7 @@ public class EventHandler {
     public static void init() {
         PlayerBlockBreakEvents.BEFORE.register((level, player, blockPos, state, blockEntity) -> {
             ItemStack stack = player.getMainHandStack();
-            if(stack.getItem() instanceof CobaltHammer) {
+            if (stack.getItem() instanceof CobaltHammer hammer) {
                 EnergyHandler handler = Energy.of(stack);
                 handler.extract(ItemConfigs.EXPEND_ENERGY_AMOUNT);
                 if (!level.isClient()) {
@@ -27,27 +28,18 @@ public class EventHandler {
                         Direction direction = hitResult.getSide();
                         int bound = CobaltArmaments.getIfEmpowered(stack) ? 2 : 1;
                         BlockPos anchorPoint = direction == Direction.DOWN || direction == Direction.UP ? blockPos : blockPos.add(0, bound - 1, 0);
-                        for (int a = -bound; a <= bound; a++) {
-                            for (int b = -bound; b <= bound; b++) {
-                                if (anchorPoint.equals(blockPos) && a == 0 && b == 0) continue;
-
-                                BlockPos target = null;
-
-                                if (direction == Direction.UP || direction == Direction.DOWN)
-                                    target = anchorPoint.add(a, 0, b);
-                                if (direction == Direction.NORTH || direction == Direction.SOUTH)
-                                    target = anchorPoint.add(a, b, 0);
-                                if (direction == Direction.EAST || direction == Direction.WEST)
-                                    target = anchorPoint.add(0, a, b);
-
-                                ServerWorld serverLevel = (ServerWorld) level;
-                                if (serverLevel.canPlayerModifyAt(player, target) && handler.getEnergy() > 0 && !serverLevel.getBlockState(target).isAir()) {
-                                    if (serverLevel.getBlockState(target).getHardness(serverLevel, target) > 0)
-                                        serverLevel.breakBlock(target, !player.isCreative());
-                                    handler.extract(ItemConfigs.EXPEND_ENERGY_AMOUNT);
-                                }
-                            }
+                        BlockBox box;
+                        switch (direction) {
+                            case UP, DOWN -> box = BlockBox.create(anchorPoint.add(bound, 0, bound), anchorPoint.add(-bound, 0, -bound));
+                            case EAST, WEST -> box = BlockBox.create(anchorPoint.add(0, bound, bound), anchorPoint.add(0, -bound, -bound));
+                            case NORTH, SOUTH -> box = BlockBox.create(anchorPoint.add(bound, bound, 0), anchorPoint.add(-bound, -bound, 0));
+                            default -> throw new IllegalStateException("Unexpected value: " + direction);
                         }
+
+                        BlockPos.stream(box).filter(blockPos1 -> level.getBlockState(blockPos1).isIn(BlockTags.PICKAXE_MINEABLE) && level.getBlockState(blockPos1).getHardness(level, blockPos1) > 0).forEach(blockPos1 -> {
+                            if (hammer.attemptEnergyDrain(stack, 1) || player.isCreative())
+                                hammer.playerBreak(level, player, stack, blockPos1);
+                        });
                     }
                 }
             }

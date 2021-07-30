@@ -7,8 +7,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +23,12 @@ public class CobaltHoe extends HoeItem implements CobaltTool {
 
     public CobaltHoe(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
         super(material, attackDamage, attackSpeed, settings);
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        this.areaUseOnBlock(context, super::useOnBlock);
+        return super.useOnBlock(context);
     }
 
     @Override
@@ -60,6 +68,6 @@ public class CobaltHoe extends HoeItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 }

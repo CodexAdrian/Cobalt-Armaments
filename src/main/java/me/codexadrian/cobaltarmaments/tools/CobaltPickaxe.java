@@ -2,7 +2,6 @@ package me.codexadrian.cobaltarmaments.tools;
 
 import me.codexadrian.cobaltarmaments.CobaltArmaments;
 import me.codexadrian.cobaltarmaments.CobaltTool;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.OreBlock;
 import net.minecraft.client.item.TooltipContext;
@@ -11,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -68,6 +66,6 @@ public class CobaltPickaxe extends PickaxeItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 }

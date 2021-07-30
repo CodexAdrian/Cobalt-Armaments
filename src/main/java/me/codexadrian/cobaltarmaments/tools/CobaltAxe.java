@@ -2,7 +2,6 @@ package me.codexadrian.cobaltarmaments.tools;
 
 import me.codexadrian.cobaltarmaments.CobaltArmaments;
 import me.codexadrian.cobaltarmaments.CobaltTool;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CobaltAxe extends AxeItem implements CobaltTool {
@@ -60,7 +58,7 @@ public class CobaltAxe extends AxeItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 
     @Override

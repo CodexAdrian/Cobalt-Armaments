@@ -3,13 +3,11 @@ package me.codexadrian.cobaltarmaments;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagGroup;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -30,8 +28,10 @@ import team.reborn.energy.EnergyTier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -80,7 +80,7 @@ public interface CobaltTool extends EnergyHolder {
         return (int) (getEnergyStorage(itemStack).getEnergy() / getMaxStoredPower() * 13.0);
     }
 
-    default int getBarColor(ItemStack itemStack) {
+    default int getBarColor() {
         return 0xc300ff;
     }
 
@@ -124,7 +124,9 @@ public interface CobaltTool extends EnergyHolder {
                 List<BlockPos> newCachedPositions = new ArrayList<>();
                 for (BlockPos logPos : cachedPositions) {
                     BlockBox box = BlockBox.create(logPos.add(1, 1, 1), logPos.add(-1, -1, -1));
-                    newCachedPositions.addAll(BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock()) && world.canPlayerModifyAt(player, blockPos)).filter(blockPos -> index.getAndIncrement() < limit).map(blockPos -> playerBreak(world, player, stack, blockPos)).toList());
+                    Set<BlockPos> logList = BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock())).filter(blockPos -> index.getAndIncrement() < limit).map(blockPos -> playerBreak(world, player, stack, blockPos).toImmutable()).collect(Collectors.toSet());
+                    logList.forEach(System.out::println);
+                    newCachedPositions.addAll(logList);
                 }
                 if (newCachedPositions.isEmpty()) break;
                 cachedPositions = newCachedPositions;
@@ -135,9 +137,21 @@ public interface CobaltTool extends EnergyHolder {
 
     default BlockPos playerBreak(World world, PlayerEntity player, ItemStack stack, BlockPos pos) {
         //TODO trick mc into thinking its the player
-        world.breakBlock(pos, !player.isCreative());
-        attemptEnergyDrain(stack, 1);
+        if(!world.isClient() && world.canPlayerModifyAt(player, pos)) {
+            BlockState state = world.getBlockState(pos);
+            world.removeBlock(pos, false);
+            state.getBlock().afterBreak(world, player, pos, state, world.getBlockEntity(pos), player.getMainHandStack());
+            state.getBlock().onBreak(world, pos, state, player);
+            attemptEnergyDrain(stack, 1);
+        }
         return pos;
+    }
+
+    default void areaUseOnBlock(ItemUsageContext context, Consumer<ItemUsageContext> consumer) {
+        if(CobaltArmaments.getIfEmpowered(context.getStack())) {
+            BlockBox box = BlockBox.create(context.getBlockPos().add(1, 0, 1), context.getBlockPos().add(-1, 0, -1));
+            BlockPos.stream(box).map(blockPos -> new BlockHitResult(context.getHitPos(), context.getSide(), blockPos.toImmutable(), false)).map(blockHitResult -> new ItemUsageContext(Objects.requireNonNull(context.getPlayer()), context.getHand(), blockHitResult)).forEach(consumer);
+        }
     }
 }
 

@@ -6,9 +6,11 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +28,12 @@ public class CobaltShovel extends ShovelItem implements CobaltTool {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         return CobaltTool.super.use(world, user, hand);
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        this.areaUseOnBlock(context, super::useOnBlock);
+        return super.useOnBlock(context);
     }
 
     @Override
@@ -55,6 +63,6 @@ public class CobaltShovel extends ShovelItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 }

@@ -61,7 +61,7 @@ public class CobaltHammer extends PickaxeItem implements CobaltTool {
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return CobaltTool.super.getBarColor(stack);
+        return CobaltTool.super.getBarColor();
     }
 
 }

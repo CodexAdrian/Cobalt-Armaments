@@ -69,5 +69,4 @@ public class CobaltArmaments implements ModInitializer {
 		EMPOWERABLE_ITEMS.add(item);
 	}
 
-
 }
