@@ -31,7 +31,7 @@ repositories {
 }
 
 minecraft {
-	accessWidener "src/main/resources/cobaltarmaments.accesswidener"
+	accessWidener "src/main/resources/silverarmaments.accesswidener"
 }
 dependencies {
 	// To change the versions see the gradle.properties file

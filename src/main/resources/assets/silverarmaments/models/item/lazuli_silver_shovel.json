@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "silverarmaments:items/lazuli_silver_shovel"
+  },
+  "overrides": [
+    {
+      "predicate": {"silverarmaments:empowered" : 1},
+      "model": "silverarmaments:item/lazuli_silver_shovel_powered"
+    }
+  ]
+}

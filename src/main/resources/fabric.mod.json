@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "cobaltarmaments",
+  "id": "silverarmaments",
   "version": "${version}",
 
-  "name": "Cobalt Armaments",
+  "name": "Silver Armaments",
   "description": "Redstone Arsenal inspired mod, adding RF armor and tools into the game for Minecraft 1.16+",
   "authors": [
     "CodexAdrian"
@@ -17,17 +17,17 @@
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
-  "accessWidener": "cobaltarmaments.accesswidener",
+  "accessWidener": "silverarmaments.accesswidener",
   "entrypoints": {
     "main": [
-      "me.codexadrian.cobaltarmaments.CobaltArmaments"
+      "me.codexadrian.silverarmaments.SilverArmaments"
     ],
     "client": [
-      "me.codexadrian.cobaltarmaments.CobaltArmamentsClient"
+      "me.codexadrian.silverarmaments.SilverArmamentsClient"
     ]
   },
   "mixins": [
-    "mixins.cobaltarmaments.json"
+    "mixins.silverarmaments.json"
   ],
 
   "depends": {

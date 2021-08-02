@@ -1,0 +1,10 @@
+{
+  "item.silverarmaments.lazuli_silver_pickaxe" : "Lazuli Silver Pickaxe",
+  "item.silverarmaments.lazuli_silver_hammer" : "Lazuli Silver Hammer",
+  "item.silverarmaments.lazuli_silver_shovel" : "Lazuli Silver Shovel",
+  "item.silverarmaments.lazuli_silver_sword" : "Lazuli Silver Sword",
+  "item.silverarmaments.lazuli_silver_hoe" : "Lazuli Silver Hoe",
+  "item.silverarmaments.lazuli_silver_axe" : "Lazuli Silver Axe",
+  "silverarmaments.empowered_indicator": "EMPOWERED",
+  "silverarmaments.depowered_indicator": "DEPOWERED"
+}

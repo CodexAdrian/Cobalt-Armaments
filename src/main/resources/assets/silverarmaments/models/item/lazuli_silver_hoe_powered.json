@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "silverarmaments:items/lazuli_silver_hoe_empowered"
+  }
+}
