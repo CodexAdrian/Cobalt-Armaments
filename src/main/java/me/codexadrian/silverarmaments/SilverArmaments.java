@@ -24,7 +24,9 @@ public class SilverArmaments implements ModInitializer {
 	public static final Item.Settings TOOL_PROPERTIES = new Item.Settings().maxCount(1).group(ItemGroup.TOOLS);
 	public static final Item.Settings ARMOR_PROPERTIES =new Item.Settings().maxCount(1).group(ItemGroup.COMBAT);
 	public static final Item SILVER_INGOT = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
-	public static final SilverToolMaterial SILVER_TOOL_MATERIAL = new SilverToolMaterial(4, ItemConfigs.ITEM_ENERGY, 15, 9, 15, () -> Ingredient.ofItems(SILVER_INGOT));
+	public static final Item LAZULI_FLUX_CRYSTAL = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
+	public static final Item REDSTONE_ROD = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
+	public static final SilverToolMaterial SILVER_TOOL_MATERIAL = new SilverToolMaterial(4, ItemConfigs.ITEM_ENERGY, 15, 1, 15, () -> Ingredient.ofItems(SILVER_INGOT));
 	public static final ArmorItem SILVER_HELMET = new ArmorItem(new SilverArmorMaterial(), EquipmentSlot.HEAD, ARMOR_PROPERTIES);
 	public static final ArmorItem SILVER_CHESTPLATE = new ArmorItem(new SilverArmorMaterial(), EquipmentSlot.CHEST, ARMOR_PROPERTIES);
 	public static final ArmorItem SILVER_LEGGINGS = new ArmorItem(new SilverArmorMaterial(), EquipmentSlot.LEGS, ARMOR_PROPERTIES);
@@ -39,6 +41,8 @@ public class SilverArmaments implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_ingot"), SILVER_INGOT);
+		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_flux_crystal"), LAZULI_FLUX_CRYSTAL);
+		Registry.register(Registry.ITEM, new Identifier(MODID, "redstone_rod"), REDSTONE_ROD);
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_helmet"), SILVER_HELMET);
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_chestplate"), SILVER_CHESTPLATE);
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_leggings"), SILVER_LEGGINGS);

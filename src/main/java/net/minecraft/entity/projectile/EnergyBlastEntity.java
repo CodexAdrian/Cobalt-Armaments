@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 
 public class EnergyBlastEntity extends ProjectileEntity {
 
-    public EnergyBlastEntity(EntityType<? extends EnergyBlastEntity> entityType, World world) {
+    EnergyBlastEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -13,4 +13,5 @@ public class EnergyBlastEntity extends ProjectileEntity {
     protected void initDataTracker() {
 
     }
+
 }

@@ -39,7 +39,7 @@ public class EventHandler {
                             default -> throw new IllegalStateException("Unexpected value: " + direction);
                         }
 
-                        SilverTool tool = (SilverTool)item;
+                        SilverTool tool = (SilverTool) item;
                         BlockPos.stream(box).filter(blockPos1 -> level.getBlockState(blockPos1).isIn(areaTool.getEffectiveBlocks()) && level.getBlockState(blockPos1).getHardness(level, blockPos1) > 0).forEach(blockPos1 -> {
                             if (tool.attemptEnergyDrain(stack, 1) || player.isCreative())
                                 tool.playerBreak(level, player, stack, blockPos1);
