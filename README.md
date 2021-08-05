@@ -1,9 +1,10 @@
-# Fabric Example Mod
+# Silver Armaments
 
-## Setup
+## Info
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Inspired by Redstone Arsenal, this mod introduces new tools, armor, and weapons that hold and utilize energy for usage. These tools are made of a new material called Lazuli Silver, a Silver and Lapis Lazuli alloy. 
 
-## License
+## Credit
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+CodexAdrian (Mod Developer and Artist)
+Josh (Artist for the Quiver and Quiver 3D Model)
