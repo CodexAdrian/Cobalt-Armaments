@@ -6,5 +6,6 @@ Inspired by Redstone Arsenal, this mod introduces new tools, armor, and weapons 
 
 ## Credit
 
-CodexAdrian (Mod Developer and Artist)
-Josh (Artist for the Quiver and Quiver 3D Model)
+- CodexAdrian (Mod Developer and Artist)
+
+- Josh (Artist for the Quiver and Quiver 3D Model)
