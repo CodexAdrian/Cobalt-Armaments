@@ -18,17 +18,20 @@ public class EnergyBlastRenderer extends EntityRenderer<EnergyBlastEntity> {
     @Override
     public void render(EnergyBlastEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         var buffer = vertexConsumers.getBuffer(SilverArmamentsClient.renderLayer);
+        long gameTime = entity.world.getTime();
         for (int i = 0; i < 20; i++) {
+            float radialModifier =  (float) (Math.abs(Math.sin(gameTime + (i * 2))) * .5);
+
             matrices.push();
             float zVal = -i * 0.3F;
             matrices.translate(0, 0, zVal);
             matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F - this.dispatcher.camera.getYaw())); // y axis
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-this.dispatcher.camera.getPitch())); // x axis
             var model = matrices.peek().getModel();
-            buffer.vertex(model, -0.5F, 1, 0).texture(0, 0).color(0xc3, 0, 0xff, 0xff).next();
-            buffer.vertex(model, -0.5F, 0, 0).texture(0, 1).color(0xc3, 0, 0xff, 0xff).next();
-            buffer.vertex(model, 0.5F, 0, 0).texture(1, 1).color(0xc3, 0, 0xff, 0xff).next();
-            buffer.vertex(model, 0.5F, 1, 0).texture(1, 0).color(0xc3, 0, 0xff, 0xff).next();
+            buffer.vertex(model, -0.5F + radialModifier, 1  - radialModifier, 0).texture(0, 0).color(0xc3, 0, 0xff, 0xff).next();
+            buffer.vertex(model, -0.5F + radialModifier, 0 + radialModifier, 0).texture(0, 1).color(0xc3, 0, 0xff, 0xff).next();
+            buffer.vertex(model, 0.5F - radialModifier, 0 + radialModifier, 0).texture(1, 1).color(0xc3, 0, 0xff, 0xff).next();
+            buffer.vertex(model, 0.5F - radialModifier, 1  - radialModifier, 0).texture(1, 0).color(0xc3, 0, 0xff, 0xff).next();
             matrices.pop();
         }
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
