@@ -20,10 +20,10 @@ public class EnergyBlastRenderer extends EntityRenderer<EnergyBlastEntity> {
         var buffer = vertexConsumers.getBuffer(SilverArmamentsClient.renderLayer);
         long gameTime = entity.world.getTime();
         for (int i = 0; i < 20; i++) {
-            float radialModifier =  (float) (Math.abs(Math.sin(gameTime + (i * 2))) * .5);
+            float radialModifier =  (float) (Math.sin(gameTime + (i) + 1.3) * .3) * .5F;
 
             matrices.push();
-            float zVal = -i * 0.3F;
+            float zVal = -i * .12F;
             matrices.translate(0, 0, zVal);
             matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F - this.dispatcher.camera.getYaw())); // y axis
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-this.dispatcher.camera.getPitch())); // x axis

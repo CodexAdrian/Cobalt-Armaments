@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
 public class SilverArmamentsClient implements ClientModInitializer {
-    public static RenderLayer renderLayer = RenderLayer.of("energy_blast", VertexFormats.POSITION_TEXTURE_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().shader(new RenderPhase.Shader(() -> SilverArmamentsClient.shaderThing)).transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)/*.depthTest(ALWAYS_DEPTH_TEST).writeMaskState(COLOR_MASK)*/.build(false));
+    public static RenderLayer renderLayer = RenderLayer.of("energy_blast", VertexFormats.POSITION_TEXTURE_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().shader(new RenderPhase.Shader(() -> SilverArmamentsClient.shaderThing)).transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY).build(false));
     public static Shader shaderThing;
 
     @Override
@@ -26,5 +26,3 @@ public class SilverArmamentsClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(SilverArmaments.ENERGY_BLAST_ENTITY, EnergyBlastRenderer::new);
     }
 }
-
-
