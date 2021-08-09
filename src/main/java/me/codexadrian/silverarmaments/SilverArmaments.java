@@ -25,6 +25,7 @@ public class SilverArmaments implements ModInitializer {
 	public static final Item.Settings ARMOR_PROPERTIES =new Item.Settings().maxCount(1).group(ItemGroup.COMBAT);
 	public static final Item SILVER_INGOT = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
 	public static final Item LAZULI_FLUX_CRYSTAL = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
+	public static final SilverQuiver SILVER_QUIVER = new SilverQuiver(new Item.Settings().group(ItemGroup.MATERIALS));
 	public static final Item REDSTONE_ROD = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
 	public static final SilverToolMaterial SILVER_TOOL_MATERIAL = new SilverToolMaterial(4, ItemConfigs.ITEM_ENERGY, 15, 1, 15, () -> Ingredient.ofItems(SILVER_INGOT));
 	public static final ArmorItem SILVER_HELMET = new ArmorItem(new SilverArmorMaterial(), EquipmentSlot.HEAD, ARMOR_PROPERTIES);
@@ -48,6 +49,7 @@ public class SilverArmaments implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_leggings"), SILVER_LEGGINGS);
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_boots"), SILVER_BOOTS);
 		Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "energy_blast"), ENERGY_BLAST_ENTITY);
+		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_quiver"), SILVER_QUIVER);
 		registerEmpowerable("lazuli_silver_hammer", SILVER_HAMMER);
 		registerEmpowerable("lazuli_silver_pickaxe", SILVER_PICKAXE);
 		registerEmpowerable("lazuli_silver_shovel", SILVER_SHOVEL);

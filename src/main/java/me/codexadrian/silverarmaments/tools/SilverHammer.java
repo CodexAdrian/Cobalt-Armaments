@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SilverHammer extends PickaxeItem implements SilverTool, ExpandingAreaBreakTool {
+public class SilverHammer extends PickaxeItem implements SilverTool, AreaBreakTool {
 
 
     public SilverHammer(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
@@ -76,6 +76,11 @@ public class SilverHammer extends PickaxeItem implements SilverTool, ExpandingAr
     @Override
     public Tag<Block> getEffectiveBlocks() {
         return BlockTags.PICKAXE_MINEABLE;
+    }
+
+    @Override
+    public int getRange(ItemStack stack) {
+        return SilverArmaments.getIfEmpowered(stack) ? 2 : 1;
     }
 }
 

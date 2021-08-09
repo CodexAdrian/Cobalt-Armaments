@@ -1,7 +1,6 @@
 package me.codexadrian.silverarmaments;
 
 import me.codexadrian.silverarmaments.tools.AreaBreakTool;
-import me.codexadrian.silverarmaments.tools.ExpandingAreaBreakTool;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,15 +20,15 @@ public class EventHandler {
         PlayerBlockBreakEvents.BEFORE.register((level, player, blockPos, state, blockEntity) -> {
             ItemStack stack = player.getMainHandStack();
             Item item = stack.getItem();
-            if (item instanceof ExpandingAreaBreakTool || (item instanceof AreaBreakTool && SilverArmaments.getIfEmpowered(stack))) {
-                AreaBreakTool areaTool = (AreaBreakTool) item;
+            if (item instanceof AreaBreakTool areaTool) {
+                int bound = areaTool.getRange(stack);
+                if(bound == 0) return true;
                 EnergyHandler handler = Energy.of(stack);
                 handler.extract(ItemConfigs.EXPEND_ENERGY_AMOUNT);
                 if (!level.isClient()) {
                     BlockHitResult hitResult = getPlayerPOVHitResult(level, player, RaycastContext.FluidHandling.ANY);
                     if (hitResult.getType() == HitResult.Type.BLOCK) {
                         Direction direction = hitResult.getSide();
-                        int bound = item instanceof ExpandingAreaBreakTool expandedTool ? SilverArmaments.getIfEmpowered(stack) ? expandedTool.getExpandedRange() : areaTool.getRange() : areaTool.getRange();
                         BlockPos anchorPoint = direction == Direction.DOWN || direction == Direction.UP ? blockPos : blockPos.add(0, bound - 1, 0);
                         BlockBox box;
                         switch (direction) {
@@ -49,5 +48,7 @@ public class EventHandler {
             }
             return true;
         });
+
+
     }
 }

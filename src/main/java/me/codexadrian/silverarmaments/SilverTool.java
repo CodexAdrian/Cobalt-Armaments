@@ -127,7 +127,6 @@ public interface SilverTool extends EnergyHolder {
                 for (BlockPos logPos : cachedPositions) {
                     BlockBox box = BlockBox.create(logPos.add(1, 1, 1), logPos.add(-1, -1, -1));
                     Set<BlockPos> logList = BlockPos.stream(box).filter(blockPos -> world.getBlockState(blockPos).isOf(state.getBlock())).filter(blockPos -> index.getAndIncrement() < limit).map(blockPos -> playerBreak(world, player, stack, blockPos).toImmutable()).collect(Collectors.toSet());
-                    logList.forEach(System.out::println);
                     newCachedPositions.addAll(logList);
                 }
                 if (newCachedPositions.isEmpty()) break;
@@ -138,7 +137,6 @@ public interface SilverTool extends EnergyHolder {
     }
 
     default BlockPos playerBreak(World world, PlayerEntity player, ItemStack stack, BlockPos pos) {
-        //TODO trick mc into thinking its the player
         if(!world.isClient() && world.canPlayerModifyAt(player, pos)) {
             ServerWorld serverWorld = (ServerWorld) world;
             BlockState state = world.getBlockState(pos);

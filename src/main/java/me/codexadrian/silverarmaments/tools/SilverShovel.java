@@ -79,4 +79,5 @@ public class SilverShovel extends ShovelItem implements SilverTool, AreaBreakToo
     public Tag<Block> getEffectiveBlocks() {
         return BlockTags.SHOVEL_MINEABLE;
     }
+
 }
