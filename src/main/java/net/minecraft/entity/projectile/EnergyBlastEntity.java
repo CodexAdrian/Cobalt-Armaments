@@ -4,8 +4,11 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EnergyBlastEntity extends ProjectileEntity {
@@ -20,24 +23,29 @@ public class EnergyBlastEntity extends ProjectileEntity {
 
     }
 
-    @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-
-        super.onEntityHit(entityHitResult);
+    protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
+        BlockPos pos = new BlockPos(hitResult.getPos());
+        if(this.getOwner() instanceof PlayerEntity) {
+            if ((hitResult.getType() != HitResult.Type.ENTITY || !this.isOwner(((EntityHitResult) hitResult).getEntity())) && this.getOwner().canModifyAt(this.world, pos)) {
+                if (!this.world.isClient) {
+                    createElectricCloud(pos);
+                }
+            }
+        }
     }
 
-    @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        super.onBlockHit(blockHitResult);
-    }
 
-    protected void createElectricCloud() {
+    protected void createElectricCloud(BlockPos pos) {
         AreaEffectCloudEntity areaEffectCloudEntity = new AreaEffectCloudEntity(this.world, this.getX(), this.getY(), this.getZ());
         areaEffectCloudEntity.setRadius(3.0F);
         areaEffectCloudEntity.setRadiusOnUse(-0.5F);
         areaEffectCloudEntity.setWaitTime(10);
-        areaEffectCloudEntity.setRadiusGrowth(-areaEffectCloudEntity.getRadius() / (float)areaEffectCloudEntity.getDuration());
+        areaEffectCloudEntity.setRadiusGrowth(-areaEffectCloudEntity.getRadius() / (float) areaEffectCloudEntity.getDuration());
         areaEffectCloudEntity.addEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 1));
+        areaEffectCloudEntity.setPosition(pos.getX(), pos.getY(), pos.getZ());
         this.world.spawnEntity(areaEffectCloudEntity);
     }
+
+
 }

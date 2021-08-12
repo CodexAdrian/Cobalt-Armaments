@@ -38,6 +38,7 @@ public class SilverArmaments implements ModInitializer {
 	public static final SilverAxe SILVER_AXE = new SilverAxe(SILVER_TOOL_MATERIAL, ItemConfigs.AXE_DAMAGE, 5, TOOL_PROPERTIES);
 	public static final SilverHoe SILVER_HOE = new SilverHoe(SILVER_TOOL_MATERIAL, ItemConfigs.HOE_DAMAGE, 5, TOOL_PROPERTIES);
 	public static final SilverSword SILVER_SWORD = new SilverSword(SILVER_TOOL_MATERIAL, ItemConfigs.SWORD_DAMAGE, 5, TOOL_PROPERTIES);
+	public static final SilverBow SILVER_BOW = new SilverBow(TOOL_PROPERTIES);
 	public static final EntityType<EnergyBlastEntity> ENERGY_BLAST_ENTITY = FabricEntityTypeBuilder.create(SpawnGroup.MISC, EnergyBlastEntity::new).dimensions(EntityDimensions.changing(1, 1)).build();
 	@Override
 	public void onInitialize() {
@@ -50,6 +51,7 @@ public class SilverArmaments implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_boots"), SILVER_BOOTS);
 		Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "energy_blast"), ENERGY_BLAST_ENTITY);
 		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_quiver"), SILVER_QUIVER);
+		Registry.register(Registry.ITEM, new Identifier(MODID, "lazuli_silver_bow"), SILVER_BOW);
 		registerEmpowerable("lazuli_silver_hammer", SILVER_HAMMER);
 		registerEmpowerable("lazuli_silver_pickaxe", SILVER_PICKAXE);
 		registerEmpowerable("lazuli_silver_shovel", SILVER_SHOVEL);
