@@ -18,6 +18,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +31,7 @@ public class SilverBow extends BowItem implements SilverTool {
     public SilverBow(Settings settings) {
         super(settings);
     }
-
+/*
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (TrinketsApi.getTrinketComponent(user).isPresent())
@@ -48,6 +50,20 @@ public class SilverBow extends BowItem implements SilverTool {
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
                 //}
             }
+    }
+*/
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (!world.isClient) {
+            EnergyBlastEntity blast = new EnergyBlastEntity(SilverArmaments.ENERGY_BLAST_ENTITY, world);
+            blast.setORIGIN(user.getBlockPos());
+            blast.setPosition(user.getX(), user.getY(), user.getZ());
+            blast.setProperties(user, user.getPitch(), user.getYaw(), 0.0F, 1.2F, 1.0F);
+            //blast.setVelocity(user.getX(), user.getY(), user.getZ(), 0.5F, 1);
+            blast.velocityDirty = true;
+            world.spawnEntity(blast);
+        }
+        return TypedActionResult.success(user.getStackInHand(hand));
     }
 
     //TODO add quiver logic here

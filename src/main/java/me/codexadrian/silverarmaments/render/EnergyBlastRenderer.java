@@ -7,7 +7,9 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.projectile.EnergyBlastEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3f;
+import org.lwjgl.system.CallbackI;
 
 public class EnergyBlastRenderer extends EntityRenderer<EnergyBlastEntity> {
 
@@ -19,9 +21,17 @@ public class EnergyBlastRenderer extends EntityRenderer<EnergyBlastEntity> {
     public void render(EnergyBlastEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         var buffer = vertexConsumers.getBuffer(SilverArmamentsClient.renderLayer);
         long gameTime = entity.world.getTime();
-        for (int i = 0; i < 20; i++) {
-            float radialModifier =  (float) (Math.sin(gameTime + (i) + 1.3) * .3) * .5F;
+        BlockPos origin = entity.getORIGIN();
+        BlockPos current = entity.getBlockPos();
+        int xLength = origin.getX() - current.getX();
+        int yLength = origin.getY() - current.getY();
+        int zLength = origin.getZ() - current.getZ();
 
+        int finalLength = (xLength * xLength + zLength * zLength) + yLength * yLength;
+
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.getYaw()));
+        for (int i = 0; i < finalLength * 100/12; i++) {
+            float radialModifier =  (float) (Math.sin(gameTime + (i) + 1.3) * .3) * .5F;
             matrices.push();
             float zVal = -i * .12F;
             matrices.translate(0, 0, zVal);
